@@ -1,0 +1,21 @@
+﻿Der Buildvorgang wurde am 31.05.2016 16:54:51 gestartet.
+     1>Projekt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\source\MyVolumeRaycaster.vcxproj" auf Knoten "3", Build Ziel(e).
+     1>CustomBuild:
+         "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\source"
+         CMD.EXE wurde mit dem oben angegebenen Pfad als aktuellem Verzeichnis gestartet.
+         UNC-Pfade werden nicht unterstützt.
+         Stattdessen wird das Windows-Verzeichnis als aktuelles Verzeichnis gesetzt.
+         Building Custom Rule //in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/source/CMakeLists.txt
+         CMake does not need to re-run because \\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\source\CMakeFiles\generate.stamp is up-to-date.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\include" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glm-0.9.5.3" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\stb-image" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework" /Zi /nologo /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "EXERCISE_SCIVIS_SOURCE_DIR=\"//in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis\"" /D "EXERCISE_SCIVIS_BINARY_DIR=\"//in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/cmake-out\"" /D GLEW_STATIC /D _CRT_SECURE_NO_WARNINGS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"MyVolumeRaycaster.dir\Debug\\" /Fd"MyVolumeRaycaster.dir\Debug\vc120.pdb" /Gd /TP /errorReport:prompt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\source\my_volume_raycaster.cpp"
+         my_volume_raycaster.cpp
+     1>\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\source\my_volume_raycaster.cpp(813): warning C4804: '>': unsichere Verwendung des Typs 'bool' in einer Operation
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\build\Debug\MyVolumeRaycaster.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib ..\framework\Debug\framework.lib "..\external\glfw-3.0.3\src\Debug\glfw3.lib" opengl32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"//in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/cmake-out/build/Debug/MyVolumeRaycaster.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"//in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/cmake-out/build/Debug/MyVolumeRaycaster.lib" /MACHINE:X64  /machine:x64 /debug MyVolumeRaycaster.dir\Debug\my_volume_raycaster.obj
+         MyVolumeRaycaster.vcxproj -> \\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\build\Debug\MyVolumeRaycaster.exe
+     1>Die Erstellung des Projekts "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\source\MyVolumeRaycaster.vcxproj" ist abgeschlossen, Build Ziel(e).
+
+Build erfolgreich.
+
+Verstrichene Zeit 00:00:06.22

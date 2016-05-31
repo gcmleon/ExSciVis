@@ -1,0 +1,53 @@
+﻿Der Buildvorgang wurde am 31.05.2016 16:54:40 gestartet.
+     1>Projekt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\external\glfw-3.0.3\src\glfw.vcxproj" auf Knoten "2", Build Ziel(e).
+     1>CustomBuild:
+         "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\external\glfw-3.0.3\src"
+         CMD.EXE wurde mit dem oben angegebenen Pfad als aktuellem Verzeichnis gestartet.
+         UNC-Pfade werden nicht unterstützt.
+         Stattdessen wird das Windows-Verzeichnis als aktuelles Verzeichnis gesetzt.
+         Building Custom Rule //in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/external/glfw-3.0.3/src/CMakeLists.txt
+         CMake does not need to re-run because \\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\external\glfw-3.0.3\src\CMakeFiles\generate.stamp is up-to-date.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\include" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\external\glfw-3.0.3\src" /Zi /nologo /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "EXERCISE_SCIVIS_SOURCE_DIR=\"//in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis\"" /D "EXERCISE_SCIVIS_BINARY_DIR=\"//in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/cmake-out\"" /D GLEW_STATIC /D _CRT_SECURE_NO_WARNINGS /D UNICODE /D WINVER=0x0501 /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"glfw.dir\Debug\\" /Fd"glfw.dir\Debug\vc120.pdb" /Gd /TC /errorReport:prompt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\clipboard.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\context.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\gamma.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\init.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\input.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\joystick.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\monitor.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\time.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\window.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\win32_clipboard.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\win32_gamma.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\win32_init.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\win32_joystick.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\win32_monitor.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\win32_time.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\win32_window.c" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\src\wgl_context.c"
+         clipboard.c
+         context.c
+         gamma.c
+         init.c
+         input.c
+         joystick.c
+         monitor.c
+         time.c
+         window.c
+         win32_clipboard.c
+         win32_gamma.c
+         win32_init.c
+         win32_joystick.c
+         win32_monitor.c
+         win32_time.c
+         win32_window.c
+         wgl_context.c
+         Code wird generiert...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\Lib.exe /OUT:"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\external\glfw-3.0.3\src\Debug\glfw3.lib" /NOLOGO /MACHINE:X64 glfw.dir\Debug\clipboard.obj
+         glfw.dir\Debug\context.obj
+         glfw.dir\Debug\gamma.obj
+         glfw.dir\Debug\init.obj
+         glfw.dir\Debug\input.obj
+         glfw.dir\Debug\joystick.obj
+         glfw.dir\Debug\monitor.obj
+         glfw.dir\Debug\time.obj
+         glfw.dir\Debug\window.obj
+         glfw.dir\Debug\win32_clipboard.obj
+         glfw.dir\Debug\win32_gamma.obj
+         glfw.dir\Debug\win32_init.obj
+         glfw.dir\Debug\win32_joystick.obj
+         glfw.dir\Debug\win32_monitor.obj
+         glfw.dir\Debug\win32_time.obj
+         glfw.dir\Debug\win32_window.obj
+         glfw.dir\Debug\wgl_context.obj
+         glfw.vcxproj -> \\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\external\glfw-3.0.3\src\Debug\glfw3.lib
+     1>Die Erstellung des Projekts "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\external\glfw-3.0.3\src\glfw.vcxproj" ist abgeschlossen, Build Ziel(e).
+
+Build erfolgreich.
+
+Verstrichene Zeit 00:00:05.86

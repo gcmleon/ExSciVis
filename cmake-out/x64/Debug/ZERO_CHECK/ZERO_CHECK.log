@@ -1,0 +1,30 @@
+﻿Der Buildvorgang wurde am 31.05.2016 16:54:33 gestartet.
+     1>Projekt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\ZERO_CHECK.vcxproj" auf Knoten "2", Build Ziel(e).
+     1>CustomBuild:
+         "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out"
+         CMD.EXE wurde mit dem oben angegebenen Pfad als aktuellem Verzeichnis gestartet.
+         UNC-Pfade werden nicht unterstützt.
+         Stattdessen wird das Windows-Verzeichnis als aktuelles Verzeichnis gesetzt.
+         Checking Build System
+         CMake is re-running because generate.stamp.list is missing.
+         CMake Warning (dev) at CMakeLists.txt:17 (if):
+           Policy CMP0054 is not set: Only interpret if() arguments as variables or
+           keywords when unquoted.  Run "cmake --help-policy CMP0054" for policy
+           details.  Use the cmake_policy command to set the policy and suppress this
+           warning.
+         
+           Quoted variables like "MSVC" will no longer be dereferenced when the policy
+           is set to NEW.  Since the policy is not set the OLD behavior will be used.
+         This warning is for project developers.  Use -Wno-dev to suppress it.
+         
+         -- Could NOT find Doxygen (missing:  DOXYGEN_EXECUTABLE) 
+         -- Using Win32 for window creation
+         -- Using WGL for context creation
+         -- Configuring done
+         -- Generating done
+         -- Build files have been written to: //in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/cmake-out
+     1>Die Erstellung des Projekts "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\ZERO_CHECK.vcxproj" ist abgeschlossen, Build Ziel(e).
+
+Build erfolgreich.
+
+Verstrichene Zeit 00:00:07.54

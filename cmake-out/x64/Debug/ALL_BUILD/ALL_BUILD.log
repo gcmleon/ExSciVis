@@ -1,0 +1,14 @@
+﻿Der Buildvorgang wurde am 31.05.2016 16:55:13 gestartet.
+     1>Projekt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\ALL_BUILD.vcxproj" auf Knoten "2", Build Ziel(e).
+     1>CustomBuild:
+         "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out"
+         CMD.EXE wurde mit dem oben angegebenen Pfad als aktuellem Verzeichnis gestartet.
+         UNC-Pfade werden nicht unterstützt.
+         Stattdessen wird das Windows-Verzeichnis als aktuelles Verzeichnis gesetzt.
+         Building Custom Rule //in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/CMakeLists.txt
+         CMake does not need to re-run because \\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\CMakeFiles\generate.stamp is up-to-date.
+     1>Die Erstellung des Projekts "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\ALL_BUILD.vcxproj" ist abgeschlossen, Build Ziel(e).
+
+Build erfolgreich.
+
+Verstrichene Zeit 00:00:01.20

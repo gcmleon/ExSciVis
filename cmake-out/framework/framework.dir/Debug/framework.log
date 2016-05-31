@@ -1,0 +1,38 @@
+﻿Der Buildvorgang wurde am 31.05.2016 16:54:41 gestartet.
+     1>Projekt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\framework\framework.vcxproj" auf Knoten "3", Build Ziel(e).
+     1>CustomBuild:
+         "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\framework"
+         CMD.EXE wurde mit dem oben angegebenen Pfad als aktuellem Verzeichnis gestartet.
+         UNC-Pfade werden nicht unterstützt.
+         Stattdessen wird das Windows-Verzeichnis als aktuelles Verzeichnis gesetzt.
+         Building Custom Rule //in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/framework/CMakeLists.txt
+         CMake does not need to re-run because \\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\framework\CMakeFiles\generate.stamp is up-to-date.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\include" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glm-0.9.5.3" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\stb-image" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework\.." /Zi /nologo /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "EXERCISE_SCIVIS_SOURCE_DIR=\"//in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis\"" /D "EXERCISE_SCIVIS_BINARY_DIR=\"//in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/cmake-out\"" /D GLEW_STATIC /D _CRT_SECURE_NO_WARNINGS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"framework.dir\Debug\\" /Fd"framework.dir\Debug\vc120.pdb" /Gd /TC /errorReport:prompt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework\glew.c"
+         glew.c
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glfw-3.0.3\include" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\glm-0.9.5.3" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\external\stb-image" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework" /I"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework\.." /Zi /nologo /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "EXERCISE_SCIVIS_SOURCE_DIR=\"//in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis\"" /D "EXERCISE_SCIVIS_BINARY_DIR=\"//in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/cmake-out\"" /D GLEW_STATIC /D _CRT_SECURE_NO_WARNINGS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"framework.dir\Debug\\" /Fd"framework.dir\Debug\vc120.pdb" /Gd /TP /errorReport:prompt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework\imgui.cpp" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework\cube.cpp" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework\utils.cpp" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework\volume_loader_raw.cpp" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework\transfer_function.cpp" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework\window.cpp" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework\plane.cpp" "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\framework\imgui_impl_glfw_gl3.cpp"
+         imgui.cpp
+         cube.cpp
+         utils.cpp
+         volume_loader_raw.cpp
+         transfer_function.cpp
+         window.cpp
+         plane.cpp
+         imgui_impl_glfw_gl3.cpp
+         Code wird generiert...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\Lib.exe /OUT:"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\framework\Debug\framework.lib" /NOLOGO /MACHINE:X64 framework.dir\Debug\glew.obj
+         framework.dir\Debug\imgui.obj
+         framework.dir\Debug\cube.obj
+         framework.dir\Debug\utils.obj
+         framework.dir\Debug\volume_loader_raw.obj
+         framework.dir\Debug\transfer_function.obj
+         framework.dir\Debug\window.obj
+         framework.dir\Debug\plane.obj
+         framework.dir\Debug\imgui_impl_glfw_gl3.obj
+         framework.vcxproj -> \\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\framework\Debug\framework.lib
+     1>Die Erstellung des Projekts "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\framework\framework.vcxproj" ist abgeschlossen, Build Ziel(e).
+
+Build erfolgreich.
+
+Verstrichene Zeit 00:00:10.66

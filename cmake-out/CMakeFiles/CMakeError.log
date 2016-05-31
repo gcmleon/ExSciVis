@@ -1,0 +1,47 @@
+The C compiler identification could not be found in "//in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/cmake-out/CMakeFiles/3.3.2/CompilerIdC/CompilerIdC.vcxproj"
+
+Determining if files pthread.h exist failed with the following output:
+Change Dir: //in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/cmake-out/CMakeFiles/CMakeTmp
+
+Run Build Command:"C:/Program Files (x86)/MSBuild/12.0/bin/MSBuild.exe" "cmTC_1e8ee.vcxproj" "/p:Configuration=Debug" "/p:VisualStudioVersion=12.0"
+Microsoft (R)-Buildmodul, Version 12.0.31101.0
+[Microsoft .NET Framework, Version 4.0.30319.42000]
+Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+
+Der Buildvorgang wurde am 31.05.2016 16:42:56 gestartet.
+Projekt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\CMakeFiles\CMakeTmp\cmTC_1e8ee.vcxproj" auf Knoten "1" (Standardziele).
+PrepareForBuild:
+  Das Verzeichnis "cmTC_1e8ee.dir\Debug\" wird erstellt.
+  Das Verzeichnis "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\CMakeFiles\CMakeTmp\Debug\" wird erstellt.
+  Das Verzeichnis "cmTC_1e8ee.dir\Debug\cmTC_1e8ee.tlog\" wird erstellt.
+InitializeBuildStatus:
+  "cmTC_1e8ee.dir\Debug\cmTC_1e8ee.tlog\unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+ClCompile:
+  C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTC_1e8ee.dir\Debug\\" /Fd"cmTC_1e8ee.dir\Debug\vc120.pdb" /Gd /TC /errorReport:queue "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\CMakeFiles\CMakeTmp\CheckIncludeFiles.c"
+  Microsoft (R) C/C++-Optimierungscompiler Version 18.00.31101 fr x64
+  Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+  
+  cl /c /Zi /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"cmTC_1e8ee.dir\Debug\\" /Fd"cmTC_1e8ee.dir\Debug\vc120.pdb" /Gd /TC /errorReport:queue "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\CMakeFiles\CMakeTmp\CheckIncludeFiles.c"
+  
+  CheckIncludeFiles.c
+\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\CMakeFiles\CMakeTmp\CheckIncludeFiles.c(2): fatal error C1083: Datei (Include) kann nicht ge”ffnet werden: "pthread.h": No such file or directory [\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\CMakeFiles\CMakeTmp\cmTC_1e8ee.vcxproj]
+Die Erstellung des Projekts "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\CMakeFiles\CMakeTmp\cmTC_1e8ee.vcxproj" ist abgeschlossen (Standardziele) -- FEHLER.
+
+Fehler beim Buildvorgang.
+
+"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\CMakeFiles\CMakeTmp\cmTC_1e8ee.vcxproj" (Standardziel) (1) ->
+(ClCompile Ziel) -> 
+  \\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\CMakeFiles\CMakeTmp\CheckIncludeFiles.c(2): fatal error C1083: Datei (Include) kann nicht ge”ffnet werden: "pthread.h": No such file or directory [\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\CMakeFiles\CMakeTmp\cmTC_1e8ee.vcxproj]
+
+    0 Warnung(en)
+    1 Fehler
+
+Verstrichene Zeit 00:00:00.58
+
+Source:
+/* */
+#include <pthread.h>
+
+
+int main(void){return 0;}
+
