@@ -131,19 +131,30 @@ void main()
 #endif
     
 #if TASK == 12 || TASK == 13
+
+	float prev_s = 0.0;
+	vec4 first_hit = vec4(0.0, 0.0, 0.0, 1.0);
     // the traversal loop,
     // termination when the sampling position is outside volume boundarys
     // another termination condition for early ray termination is added
     while (inside_volume)
     {
         // get sample
-        float s = get_sample_data(sampling_pos);
+		float s = get_sample_data(sampling_pos);
 
-        // dummy code
-        dst = vec4(light_diffuse_color, 1.0);
+		// apply the transfer functions to retrieve color and opacity
+		vec4 color = texture(transfer_texture, vec2(s, s));
+		if ((s > iso_value) && (prev_s < iso_value)) {
+			first_hit = color;
+			break;
+		}
+
+		prev_s = s;
+        //dst = vec4(light_diffuse_color, 1.0);
 
         // increment the ray sampling position
         sampling_pos += ray_increment;
+
 #if TASK == 13 // Binary Search
         IMPLEMENT;
 #endif
@@ -157,6 +168,8 @@ void main()
         // update the loop termination condition
         inside_volume = inside_volume_bounds(sampling_pos);
     }
+
+	dst = first_hit;
 #endif 
 
 #if TASK == 31
