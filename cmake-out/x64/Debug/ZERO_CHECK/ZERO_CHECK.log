@@ -1,5 +1,5 @@
-﻿Der Buildvorgang wurde am 31.05.2016 16:54:33 gestartet.
-     1>Projekt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\ZERO_CHECK.vcxproj" auf Knoten "2", Build Ziel(e).
+﻿Der Buildvorgang wurde am 14.06.2016 16:29:33 gestartet.
+     1>Projekt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\ZERO_CHECK.vcxproj" auf Knoten "2", Rebuild Ziel(e).
      1>CustomBuild:
          "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out"
          CMD.EXE wurde mit dem oben angegebenen Pfad als aktuellem Verzeichnis gestartet.
@@ -23,8 +23,8 @@
          -- Configuring done
          -- Generating done
          -- Build files have been written to: //in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/cmake-out
-     1>Die Erstellung des Projekts "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\ZERO_CHECK.vcxproj" ist abgeschlossen, Build Ziel(e).
+     1>Die Erstellung des Projekts "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\ZERO_CHECK.vcxproj" ist abgeschlossen, Rebuild Ziel(e).
 
 Build erfolgreich.
 
-Verstrichene Zeit 00:00:07.54
+Verstrichene Zeit 00:00:09.97

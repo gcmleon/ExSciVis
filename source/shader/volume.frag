@@ -47,6 +47,32 @@ get_sample_data(vec3 in_sampling_pos)
 
 }
 
+float
+binary_search(float data_point, float prev)
+{
+	float left = prev;
+	float right = data_point;
+	float mid = (left + right) / 2;
+	bool found;
+
+	while (true) {
+		if (mid == iso_value) {
+			found = true;
+			break;
+		}
+		else {
+			if (mid > data_point) {
+				right = mid - 1;
+			}
+			else {
+				left = mid + 1;
+			}
+		}
+	}
+
+	return mid;
+}
+
 void main()
 {
     /// One step trough the volume
@@ -133,6 +159,12 @@ void main()
 #if TASK == 12 || TASK == 13
 
 	float prev_s = 0.0;
+	int iterations = 900;
+	int i = 0;
+	float sigma = 0.00000001;
+	float left, right, mid;
+	float step = 0.0001;
+	bool found = false;
 	vec4 first_hit = vec4(0.0, 0.0, 0.0, 1.0);
     // the traversal loop,
     // termination when the sampling position is outside volume boundarys
@@ -144,26 +176,60 @@ void main()
 
 		// apply the transfer functions to retrieve color and opacity
 		vec4 color = texture(transfer_texture, vec2(s, s));
+
+
 		if ((s > iso_value) && (prev_s < iso_value)) {
 			first_hit = color;
-			break;
-		}
-
-		prev_s = s;
-        //dst = vec4(light_diffuse_color, 1.0);
-
-        // increment the ray sampling position
-        sampling_pos += ray_increment;
+		
 
 #if TASK == 13 // Binary Search
-        IMPLEMENT;
+		
+		//binary_search(s, float prev_s);
+
+			left = prev_s;
+			right = s;
+
+			i = 0;
+			found = false;
+
+			while (i < iterations && !found && left<=right) {
+				
+				//first_hit = vec4(1.0, 0.0, 1.0, 1.0);
+				mid = left + ((right - left)/2);
+
+				if ((mid - iso_value) < sigma) {
+					found = true;
+					//first_hit = texture(transfer_texture, vec2(mid, mid));
+					//first_hit = vec4(0.0, 1.0, 0.0, 1.0);
+					break;
+				} else {
+					if (mid > iso_value) {
+						right = mid - step;
+					}
+					else {
+						left = mid + step;
+					}
+				}
+				i = i + 1;
+			}
+			first_hit = texture(transfer_texture, vec2(mid, mid));
+
+			
+
 #endif
+			break;
+		}
 #if ENABLE_LIGHTNING == 1 // Add Shading
         IMPLEMENTLIGHT;
 #if ENABLE_SHADOWING == 1 // Add Shadows
         IMPLEMENTSHADOW;
 #endif
 #endif
+		prev_s = s;
+		//dst = vec4(light_diffuse_color, 1.0);
+
+		// increment the ray sampling position
+		sampling_pos += ray_increment;
 
         // update the loop termination condition
         inside_volume = inside_volume_bounds(sampling_pos);

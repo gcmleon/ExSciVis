@@ -1,5 +1,5 @@
-﻿Der Buildvorgang wurde am 31.05.2016 16:54:51 gestartet.
-     1>Projekt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\source\MyVolumeRaycaster.vcxproj" auf Knoten "3", Build Ziel(e).
+﻿Der Buildvorgang wurde am 14.06.2016 16:29:58 gestartet.
+     1>Projekt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\source\MyVolumeRaycaster.vcxproj" auf Knoten "3", Rebuild Ziel(e).
      1>CustomBuild:
          "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\source"
          CMD.EXE wurde mit dem oben angegebenen Pfad als aktuellem Verzeichnis gestartet.
@@ -14,8 +14,8 @@
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\build\Debug\MyVolumeRaycaster.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib ..\framework\Debug\framework.lib "..\external\glfw-3.0.3\src\Debug\glfw3.lib" opengl32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"//in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/cmake-out/build/Debug/MyVolumeRaycaster.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"//in.uni-weimar.de/fs/home/m/s/wepi1540/desktop/GitHub/scivis/ExSciVis/cmake-out/build/Debug/MyVolumeRaycaster.lib" /MACHINE:X64  /machine:x64 /debug MyVolumeRaycaster.dir\Debug\my_volume_raycaster.obj
          MyVolumeRaycaster.vcxproj -> \\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\build\Debug\MyVolumeRaycaster.exe
-     1>Die Erstellung des Projekts "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\source\MyVolumeRaycaster.vcxproj" ist abgeschlossen, Build Ziel(e).
+     1>Die Erstellung des Projekts "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\source\MyVolumeRaycaster.vcxproj" ist abgeschlossen, Rebuild Ziel(e).
 
 Build erfolgreich.
 
-Verstrichene Zeit 00:00:06.22
+Verstrichene Zeit 00:00:07.17
