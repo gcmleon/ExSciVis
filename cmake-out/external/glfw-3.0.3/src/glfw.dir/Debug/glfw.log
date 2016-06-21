@@ -1,4 +1,4 @@
-﻿Der Buildvorgang wurde am 14.06.2016 16:29:44 gestartet.
+﻿Der Buildvorgang wurde am 21.06.2016 15:33:04 gestartet.
      1>Projekt "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\external\glfw-3.0.3\src\glfw.vcxproj" auf Knoten "3", Rebuild Ziel(e).
      1>CustomBuild:
          "\\in.uni-weimar.de\fs\home\m\s\wepi1540\desktop\GitHub\scivis\ExSciVis\cmake-out\external\glfw-3.0.3\src"
@@ -50,4 +50,4 @@
 
 Build erfolgreich.
 
-Verstrichene Zeit 00:00:09.41
+Verstrichene Zeit 00:00:11.03

@@ -47,30 +47,26 @@ get_sample_data(vec3 in_sampling_pos)
 
 }
 
-float
-binary_search(float data_point, float prev)
+vec3
+get_gradient(vec3 in_sampling_pos, vec3 in_increment)
 {
-	float left = prev;
-	float right = data_point;
-	float mid = (left + right) / 2;
-	bool found;
 
-	while (true) {
-		if (mid == iso_value) {
-			found = true;
-			break;
-		}
-		else {
-			if (mid > data_point) {
-				right = mid - 1;
-			}
-			else {
-				left = mid + 1;
-			}
-		}
-	}
+	float step_x = 1.0 / volume_dimensions.x;
+	float step_y = 1.0 / volume_dimensions.y;
+	float step_z = 1.0 / volume_dimensions.z;
 
-	return mid;
+	// X axis
+	float gx = (get_sample_data(vec3(in_sampling_pos.x + step_x, in_sampling_pos.y, in_sampling_pos.z)) - get_sample_data(in_sampling_pos.x - step_x, in_sampling_pos.y, in_sampling_pos.z)) / 2;
+	// Y axis
+	float gy = (get_sample_data(vec3(in_sampling_pos.x, in_sampling_pos.y + step_y, in_sampling_pos.z)) - get_sample_data(in_sampling_pos.x, in_sampling_pos.y - step_y, in_sampling_pos.z)) / 2;
+	// Z axis
+	float gz = (get_sample_data(vec3(in_sampling_pos.x, in_sampling_pos.y, in_sampling_pos.z + step_z)) - get_sample_data(in_sampling_pos.x, in_sampling_pos.y, in_sampling_pos.z - step_z)) / 2;
+
+	vec3 gradient = vec3(gx, gy, gz);
+	
+	float magnitude = sqrt(gx*gx + gy*gy + gz*gz);
+
+	return gradient;
 }
 
 void main()
@@ -182,10 +178,8 @@ void main()
 			first_hit = color;
 		
 
-#if TASK == 13 // Binary Search
-		
-		//binary_search(s, float prev_s);
-
+#if TASK == 13 
+			// Binary Search
 			left = prev_s;
 			right = s;
 
@@ -226,7 +220,6 @@ void main()
 #endif
 #endif
 		prev_s = s;
-		//dst = vec4(light_diffuse_color, 1.0);
 
 		// increment the ray sampling position
 		sampling_pos += ray_increment;
