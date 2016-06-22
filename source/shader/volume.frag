@@ -30,6 +30,12 @@ uniform vec3    light_diffuse_color;
 uniform vec3    light_specular_color;
 uniform float   light_ref_coef;
 
+// parameters of the material and possible values
+// Phone Shading from http://sunandblackcat.com/tipFullView.php?l=eng&topicid=30&topic=Phong-Lighting
+/*uniform vec3 u_matAmbientReflectances;
+uniform vec3 u_matDiffuseReflectances; 
+uniform vec3 u_matSpecularReflectances;*/
+
 
 bool
 inside_volume_bounds(const in vec3 sampling_position)
@@ -56,11 +62,11 @@ get_gradient(vec3 in_sampling_pos, vec3 in_increment)
 	float step_z = 1.0 / volume_dimensions.z;
 
 	// X axis
-	float gx = (get_sample_data(vec3(in_sampling_pos.x + step_x, in_sampling_pos.y, in_sampling_pos.z)) - get_sample_data(in_sampling_pos.x - step_x, in_sampling_pos.y, in_sampling_pos.z)) / 2;
+	float gx = (get_sample_data(vec3(in_sampling_pos.x + step_x, in_sampling_pos.y, in_sampling_pos.z)) - get_sample_data(vec3(in_sampling_pos.x - step_x, in_sampling_pos.y, in_sampling_pos.z))) / 2;
 	// Y axis
-	float gy = (get_sample_data(vec3(in_sampling_pos.x, in_sampling_pos.y + step_y, in_sampling_pos.z)) - get_sample_data(in_sampling_pos.x, in_sampling_pos.y - step_y, in_sampling_pos.z)) / 2;
+	float gy = (get_sample_data(vec3(in_sampling_pos.x, in_sampling_pos.y + step_y, in_sampling_pos.z)) - get_sample_data(vec3(in_sampling_pos.x, in_sampling_pos.y - step_y, in_sampling_pos.z))) / 2;
 	// Z axis
-	float gz = (get_sample_data(vec3(in_sampling_pos.x, in_sampling_pos.y, in_sampling_pos.z + step_z)) - get_sample_data(in_sampling_pos.x, in_sampling_pos.y, in_sampling_pos.z - step_z)) / 2;
+	float gz = (get_sample_data(vec3(in_sampling_pos.x, in_sampling_pos.y, in_sampling_pos.z + step_z)) - get_sample_data(vec3(in_sampling_pos.x, in_sampling_pos.y, in_sampling_pos.z - step_z))) / 2;
 
 	vec3 gradient = vec3(gx, gy, gz);
 	
@@ -68,6 +74,36 @@ get_gradient(vec3 in_sampling_pos, vec3 in_increment)
 
 	return gradient;
 }
+
+// returns intensity of reflected ambient lighting
+/*vec3 ambientLighting()
+{
+   return u_matAmbientReflectance * light_ambient_color;
+}
+
+// returns intensity of diffuse reflection
+vec3 diffuseLighting(in vec3 N, in vec3 L)
+{
+   // calculation as for Lambertian reflection
+   float diffuseTerm = clamp(dot(N, L), 0, 1) ;
+   return u_matDiffuseReflectance * light_diffuse_color * diffuseTerm;
+}
+
+// returns intensity of specular reflection
+vec3 specularLighting(in vec3 N, in vec3 L, in vec3 V)
+{
+   float specularTerm = 0;
+
+   // calculate specular reflection only if
+   // the surface is oriented to the light source
+   if(dot(N, L) > 0)
+   {
+      // half vector
+      vec3 H = normalize(L + V);
+      specularTerm = pow(dot(N, H), light_ref_coef);
+   }
+   return u_matSpecularReflectance * light_specular_color * specularTerm;
+}*/
 
 void main()
 {
@@ -113,7 +149,26 @@ void main()
     }
 
     dst = max_val;
-#endif 
+#endif
+
+//Taks 22
+
+// normalize vectors after interpolation
+/*   vec3 L = normalize(o_toLight);
+   vec3 V = normalize(o_toCamera);
+   vec3 N = normalize(o_normal);
+
+   // get Blinn-Phong reflectance components
+   float Iamb = ambientLighting();
+   float Idif = diffuseLighting(N, L);
+   float Ispe = specularLighting(N, L, V);
+
+   // diffuse color of the object from texture
+   vec3 diffuseColor = texture(u_diffuseTexture, o_texcoords).rgb;
+
+   // combination of all components and diffuse color of the object
+   resultingColor.xyz = diffuseColor * (Iamb + Idif + Ispe);
+   resultingColor.a = 1; */
     
 #if TASK == 11
 	int i = 0;
