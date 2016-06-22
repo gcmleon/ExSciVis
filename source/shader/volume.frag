@@ -32,9 +32,9 @@ uniform float   light_ref_coef;
 
 // parameters of the material and possible values
 // Phone Shading from http://sunandblackcat.com/tipFullView.php?l=eng&topicid=30&topic=Phong-Lighting
-/*uniform vec3 u_matAmbientReflectances;
+uniform vec3 u_matAmbientReflectances;
 uniform vec3 u_matDiffuseReflectances; 
-uniform vec3 u_matSpecularReflectances;*/
+uniform vec3 u_matSpecularReflectances;
 
 
 bool
@@ -76,9 +76,9 @@ get_gradient(vec3 in_sampling_pos, vec3 in_increment)
 }
 
 // returns intensity of reflected ambient lighting
-/*vec3 ambientLighting()
+vec3 ambientLighting()
 {
-   return u_matAmbientReflectance * light_ambient_color;
+   return u_matAmbientReflectances * light_ambient_color;
 }
 
 // returns intensity of diffuse reflection
@@ -86,7 +86,7 @@ vec3 diffuseLighting(in vec3 N, in vec3 L)
 {
    // calculation as for Lambertian reflection
    float diffuseTerm = clamp(dot(N, L), 0, 1) ;
-   return u_matDiffuseReflectance * light_diffuse_color * diffuseTerm;
+   return u_matDiffuseReflectances * light_diffuse_color * diffuseTerm;
 }
 
 // returns intensity of specular reflection
@@ -102,8 +102,8 @@ vec3 specularLighting(in vec3 N, in vec3 L, in vec3 V)
       vec3 H = normalize(L + V);
       specularTerm = pow(dot(N, H), light_ref_coef);
    }
-   return u_matSpecularReflectance * light_specular_color * specularTerm;
-}*/
+   return u_matSpecularReflectances * light_specular_color * specularTerm;
+}
 
 void main()
 {
@@ -150,25 +150,6 @@ void main()
 
     dst = max_val;
 #endif
-
-//Taks 22
-
-// normalize vectors after interpolation
-/*   vec3 L = normalize(o_toLight);
-   vec3 V = normalize(o_toCamera);
-   vec3 N = normalize(o_normal);
-
-   // get Blinn-Phong reflectance components
-   float Iamb = ambientLighting();
-   float Idif = diffuseLighting(N, L);
-   float Ispe = specularLighting(N, L, V);
-
-   // diffuse color of the object from texture
-   vec3 diffuseColor = texture(u_diffuseTexture, o_texcoords).rgb;
-
-   // combination of all components and diffuse color of the object
-   resultingColor.xyz = diffuseColor * (Iamb + Idif + Ispe);
-   resultingColor.a = 1; */
     
 #if TASK == 11
 	int i = 0;
@@ -269,7 +250,31 @@ void main()
 			break;
 		}
 #if ENABLE_LIGHTNING == 1 // Add Shading
-        IMPLEMENTLIGHT;
+        //IMPLEMENTLIGHT;
+
+    // normalize vectors after interpolation
+
+    //Do we get the Normal from the gradient?
+    //What is the in_sampling_pos and in_increment
+    //vec3 N = normalize(get_gradient(in_sampling_pos, in_increment));
+
+   /* vec3 L = normalize(light_position);
+    vec3 V = normalize(camera_location);
+
+    // get Blinn-Phong reflectance components
+    float Iamb = ambientLighting();
+    float Idif = diffuseLighting(N, L);
+    float Ispe = specularLighting(N, L, V);
+
+    // diffuse color of the object from texture
+    //What values do we use for the color?
+    vec3 diffuseColor = texture(u_diffuseTexture, o_texcoords).rgb;
+
+    // combination of all components and diffuse color of the object
+    resultingColor.xyz = diffuseColor * (Iamb + Idif + Ispe);
+    resultingColor.a = 1; */
+
+
 #if ENABLE_SHADOWING == 1 // Add Shadows
         IMPLEMENTSHADOW;
 #endif
