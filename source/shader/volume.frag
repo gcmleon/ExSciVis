@@ -30,12 +30,6 @@ uniform vec3    light_diffuse_color;
 uniform vec3    light_specular_color;
 uniform float   light_ref_coef;
 
-// parameters of the material and possible values
-// Phone Shading from http://sunandblackcat.com/tipFullView.php?l=eng&topicid=30&topic=Phong-Lighting
-uniform vec3 u_matAmbientReflectances;
-uniform vec3 u_matDiffuseReflectances; 
-uniform vec3 u_matSpecularReflectances;
-
 
 bool
 inside_volume_bounds(const in vec3 sampling_position)
@@ -54,7 +48,7 @@ get_sample_data(vec3 in_sampling_pos)
 }
 
 vec3
-get_gradient(vec3 in_sampling_pos, vec3 in_increment)
+get_gradient(vec3 in_sampling_pos)
 {
 
 	float step_x = 1.0 / volume_dimensions.x;
@@ -70,27 +64,31 @@ get_gradient(vec3 in_sampling_pos, vec3 in_increment)
 
 	vec3 gradient = vec3(gx, gy, gz);
 	
-	float magnitude = sqrt(gx*gx + gy*gy + gz*gz);
+	//float magnitude = sqrt(gx*gx + gy*gy + gz*gz);
 
 	return gradient;
 }
 
+
+// Phong Shading from http://sunandblackcat.com/tipFullView.php?l=eng&topicid=30&topic=Phong-Lighting
+
 // returns intensity of reflected ambient lighting
-vec3 ambientLighting()
+vec3 ambientLighting(const in float ka)
 {
-   return u_matAmbientReflectances * light_ambient_color;
+	// !! a possible problem here is that you're using the whole vector, not each component (e.g. light_ambient_color.x)
+   return ka * light_ambient_color;
 }
 
 // returns intensity of diffuse reflection
-vec3 diffuseLighting(in vec3 N, in vec3 L)
+vec3 diffuseLighting(const in float kd, in vec3 N, in vec3 L)
 {
    // calculation as for Lambertian reflection
    float diffuseTerm = clamp(dot(N, L), 0, 1) ;
-   return u_matDiffuseReflectances * light_diffuse_color * diffuseTerm;
+   return kd * light_diffuse_color * diffuseTerm;
 }
 
 // returns intensity of specular reflection
-vec3 specularLighting(in vec3 N, in vec3 L, in vec3 V)
+vec3 specularLighting(const in float ks, in vec3 N, in vec3 L, in vec3 V)
 {
    float specularTerm = 0;
 
@@ -102,7 +100,7 @@ vec3 specularLighting(in vec3 N, in vec3 L, in vec3 V)
       vec3 H = normalize(L + V);
       specularTerm = pow(dot(N, H), light_ref_coef);
    }
-   return u_matSpecularReflectances * light_specular_color * specularTerm;
+   return ks * light_specular_color * specularTerm;
 }
 
 void main()
@@ -114,6 +112,8 @@ void main()
 
     /// Init color of fragment
     vec4 dst = vec4(0.0, 0.0, 0.0, 0.0);
+
+	vec4 resultingColor;
 
     /// check if we are inside volume
     bool inside_volume = inside_volume_bounds(sampling_pos);
@@ -252,27 +252,42 @@ void main()
 #if ENABLE_LIGHTNING == 1 // Add Shading
         //IMPLEMENTLIGHT;
 
-    // normalize vectors after interpolation
+		const float ka = 0.5;
+		const float kd = 0.5;
+		const float ks = 0.5;
 
-    //Do we get the Normal from the gradient?
-    //What is the in_sampling_pos and in_increment
-    //vec3 N = normalize(get_gradient(in_sampling_pos, in_increment));
+    //normalize vectors after interpolation
 
-   /* vec3 L = normalize(light_position);
+    //Do we get the Normal from the gradient? - yes
+    //What is the in_sampling_pos and in_increment - check the lab slides, increment is the step you take each iteration through the ray
+
+    vec3 N = normalize(get_gradient(in_sampling_pos));
+
+    vec3 L = normalize(light_position);
     vec3 V = normalize(camera_location);
 
     // get Blinn-Phong reflectance components
-    float Iamb = ambientLighting();
-    float Idif = diffuseLighting(N, L);
-    float Ispe = specularLighting(N, L, V);
+		// G: i'd suggest doing this 3 times, per each color component
+    float Iamb = ambientLighting(ka);
+    float Idif = diffuseLighting(kd, N, L);
+    float Ispe = specularLighting(ks, N, L, V);
 
     // diffuse color of the object from texture
-    //What values do we use for the color?
-    vec3 diffuseColor = texture(u_diffuseTexture, o_texcoords).rgb;
+    //What values do we use for the color? 
+	// ---------------> it's either volume_texture or transfer_texture (check the uniforms you already have)
+
+	// check the code of get_sample_data and the color calculation in previous tasks
+	vec3 diffuseColor = texture(transfer_texture, o_texcoords).rgb;
+
+	//vec3 obj_to_tex = vec3(1.0) / max_bounds;
+	//vec3 diffuseColor = texture(volume_texture, in_sampling_pos * obj_to_tex).rgb;
 
     // combination of all components and diffuse color of the object
+	
     resultingColor.xyz = diffuseColor * (Iamb + Idif + Ispe);
-    resultingColor.a = 1; */
+    resultingColor.a = 1.0;
+	// the final color should be assigned to Fragcolor (last line of the shader)
+	// but this should be possible to be combined with the other tasks -> dst variable
 
 
 #if ENABLE_SHADOWING == 1 // Add Shadows
@@ -319,6 +334,6 @@ void main()
 #endif 
 
     // return the calculated color value
-    FragColor = dst;
+	FragColor = dst;
 }
 
