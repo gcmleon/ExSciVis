@@ -73,7 +73,7 @@ get_gradient(vec3 in_sampling_pos)
 // Phong Shading from http://sunandblackcat.com/tipFullView.php?l=eng&topicid=30&topic=Phong-Lighting
 
 // returns intensity of reflected ambient lighting
-vec3 ambientLighting(const in float ka)
+/*vec3 ambientLighting(const in float ka)
 {
 	// !! a possible problem here is that you're using the whole vector, not each component (e.g. light_ambient_color.x)
    return ka * light_ambient_color;
@@ -101,7 +101,7 @@ vec3 specularLighting(const in float ks, in vec3 N, in vec3 L, in vec3 V)
       specularTerm = pow(dot(N, H), light_ref_coef);
    }
    return ks * light_specular_color * specularTerm;
-}
+}*/
 
 void main()
 {
@@ -250,44 +250,65 @@ void main()
 			break;
 		}
 #if ENABLE_LIGHTNING == 1 // Add Shading
-        //IMPLEMENTLIGHT;
 
-		const float ka = 0.5;
-		const float kd = 0.5;
-		const float ks = 0.5;
+	const float ka = 0.5;
+	const float kd = 0.5;
+	const float ks = 0.5;
+
+        // apply the transfer functions to retrieve color and opacity
+    //vec4 color = texture(transfer_texture, vec2(s, s));
+    //vec3 obj_to_tex = vec3(1.0) / max_bounds;
+
+    //vec4 color = texture(transfer_texture, vec2(s, s));
 
     //normalize vectors after interpolation
 
-    //Do we get the Normal from the gradient? - yes
-    //What is the in_sampling_pos and in_increment - check the lab slides, increment is the step you take each iteration through the ray
+    //Si N es el contrario del gradinete, tiene sentido color el gradiente en negativo, no?
+    vec3 N = normalize(get_gradient((-sampling_pos).xyz));
 
-    vec3 N = normalize(get_gradient(in_sampling_pos));
+    vec3 L = normalize((light_position - camera_location).xyz);
+    vec3 V = normalize((-camera_location).xyz);
 
-    vec3 L = normalize(light_position);
-    vec3 V = normalize(camera_location);
+    vec3 halfWayDir = normalize((light_position + camera_location).xyz);
+
+    float spec = ks * pow(max(dot(N, halfWayDir), 0.0),9.0);
+
+    float diffuse = kd * max(dot(N,L), 0.0);
+    diffuse = clamp(diffuse, 0.0, 1.0);
+
+    resultingColor = vec4(ka * color.xyz + 
+                         diffuse * color.xyz  + 
+                         first_hit.xyz * spec,
+                         1.0);
+
 
     // get Blinn-Phong reflectance components
 		// G: i'd suggest doing this 3 times, per each color component
-    float Iamb = ambientLighting(ka);
-    float Idif = diffuseLighting(kd, N, L);
-    float Ispe = specularLighting(ks, N, L, V);
+        // F: Maybe it is not needed it if we assign directly to the FragColor.
+    //Implemented for Blinn-Phong
+    //Code taken from: http://learnopengl.com/#!Advanced-Lighting/Advanced-Lighting
+
+    //Fragcolor = vec4(ka * color + diffuse * color);
 
     // diffuse color of the object from texture
     //What values do we use for the color? 
 	// ---------------> it's either volume_texture or transfer_texture (check the uniforms you already have)
 
 	// check the code of get_sample_data and the color calculation in previous tasks
-	vec3 diffuseColor = texture(transfer_texture, o_texcoords).rgb;
+	//vec3 diffuseColor = texture(transfer_texture, o_texcoords).rgb;
 
 	//vec3 obj_to_tex = vec3(1.0) / max_bounds;
-	//vec3 diffuseColor = texture(volume_texture, in_sampling_pos * obj_to_tex).rgb;
+	//vec3 diffuseColor = texture(volume_texture, sampling_pos * obj_to_tex).rgb;
 
     // combination of all components and diffuse color of the object
 	
-    resultingColor.xyz = diffuseColor * (Iamb + Idif + Ispe);
-    resultingColor.a = 1.0;
+    //resultingColor.xyz = diffuseColor * (Iamb + Idif + Ispe);
 	// the final color should be assigned to Fragcolor (last line of the shader)
 	// but this should be possible to be combined with the other tasks -> dst variable
+    
+    //Se modifica el first_hit. Porque este esta enlazado a la task 12-13
+    first_hit = resultingColor;
+    //dst = resultingColor;
 
 
 #if ENABLE_SHADOWING == 1 // Add Shadows
@@ -325,7 +346,7 @@ void main()
         sampling_pos += ray_increment;
 
 #if ENABLE_LIGHTNING == 1 // Add Shading
-        IMPLEMENT;
+        //dst = resultingColor;
 #endif
 
         // update the loop termination condition
