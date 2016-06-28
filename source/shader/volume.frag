@@ -224,50 +224,44 @@ void main()
 			N = normalize(get_gradient((mid).xyz));
 
 #endif
-			break;
-		}
+			showing_color = vec4(N / 2 + 0.5, 1.0);
+			
 #if ENABLE_LIGHTNING == 1 // Add Shading
 
-	const float ka = 0.5;
-	const float kd = 0.5;
-	const float ks = 0.5;
+		const float ka = 0.5;
+		const float kd = 0.5;
+		const float ks = 0.5;
 	
-	const vec3 specular = vec3(1.0, 3.0, 3.0);
-	const float exponent = 5.0;
+		const vec3 specular = vec3(1.0, 3.0, 3.0);
+		const float exponent = 5.0;
 
-    //normalize vectors after interpolation
-	vec3 N = normalize(get_gradient((mid).xyz));
-	vec3 L = normalize((light_position - sampling_pos).xyz);
-	vec3 V = normalize((-ray_increment).xyz);
+		//normalize vectors after interpolation
+		vec3 N = normalize(get_gradient((mid).xyz));
+		vec3 L = normalize((light_position - mid).xyz);
+		vec3 V = normalize((-ray_increment).xyz);
 
-    vec3 halfWayDir = normalize(light_position.xyz + camera_location.xyz);
+		vec3 halfWayDir = normalize(light_position.xyz + camera_location.xyz);
 
-	float spec = ks * pow(max(0.0, dot(N, halfWayDir)), exponent);
+		float spec = ks * pow(max(0.0, dot(N, halfWayDir)), exponent);
 
-    float diffuse = kd * max(dot(N, L), 0.0);
-    diffuse = clamp(diffuse, 0.0, 1.0);
+		float diffuse = kd * max(dot(N, L), 0.0);
+		diffuse = clamp(diffuse, 0.0, 1.0);
 
-	/*resultingColor = vec4(ka * showing_color.xyz + 
-						  diffuse * showing_color.xyz  + 
-                         showing_color.xyz * spec,
-                         1.0);*/
+		showing_color = vec4(ka * showing_color.xyz + diffuse * showing_color.xyz + showing_color.xyz * spec, 1.0); 
 
-	//resultingColor = vec4(diffuse * showing_color.xyz, 1.0);
+		//showing_color = vec4(1.0, 0.0, 0.0, 1.0);
+		//resultingColor = vec4(N/2 + 0.5, 1.0);
 
-	resultingColor = vec4(N/2 + 0.5, 1.0);
-
-    //Implemented for Blinn-Phong
-    //Code taken from: http://learnopengl.com/#!Advanced-Lighting/Advanced-Lighting
-    
-    //Se modifica el first_hit. Porque este esta enlazado a la task 12-13
-
-	//showing_color = resultingColor;
-	//dst = showing_color;
+		//Implemented for Blinn-Phong
+		//Code taken from: http://learnopengl.com/#!Advanced-Lighting/Advanced-Lighting
+   
 
 #if ENABLE_SHADOWING == 1 // Add Shadows
         IMPLEMENTSHADOW;
 #endif
 #endif
+		break;
+		}
 		prev_s = s;
 
 		// increment the ray sampling position
@@ -277,7 +271,7 @@ void main()
         inside_volume = inside_volume_bounds(sampling_pos);
     }
 
-	showing_color = vec4(N / 2 + 0.5, 1.0);
+	
 	dst = showing_color;
 #endif 
 	
