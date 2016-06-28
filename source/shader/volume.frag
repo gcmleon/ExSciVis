@@ -72,36 +72,6 @@ get_gradient(vec3 in_sampling_pos)
 
 // Phong Shading from http://sunandblackcat.com/tipFullView.php?l=eng&topicid=30&topic=Phong-Lighting
 
-// returns intensity of reflected ambient lighting
-/*vec3 ambientLighting(const in float ka)
-{
-	// !! a possible problem here is that you're using the whole vector, not each component (e.g. light_ambient_color.x)
-   return ka * light_ambient_color;
-}
-
-// returns intensity of diffuse reflection
-vec3 diffuseLighting(const in float kd, in vec3 N, in vec3 L)
-{
-   // calculation as for Lambertian reflection
-   float diffuseTerm = clamp(dot(N, L), 0, 1) ;
-   return kd * light_diffuse_color * diffuseTerm;
-}
-
-// returns intensity of specular reflection
-vec3 specularLighting(const in float ks, in vec3 N, in vec3 L, in vec3 V)
-{
-   float specularTerm = 0;
-
-   // calculate specular reflection only if
-   // the surface is oriented to the light source
-   if(dot(N, L) > 0)
-   {
-      // half vector
-      vec3 H = normalize(L + V);
-      specularTerm = pow(dot(N, H), light_ref_coef);
-   }
-   return ks * light_specular_color * specularTerm;
-}*/
 
 void main()
 {
@@ -113,7 +83,10 @@ void main()
     /// Init color of fragment
     vec4 dst = vec4(0.0, 0.0, 0.0, 0.0);
 
-	vec4 resultingColor;
+	vec4 resultingColor = vec4(0.0);
+
+	vec3 N = vec3(0.0);
+		
 
     /// check if we are inside volume
     bool inside_volume = inside_volume_bounds(sampling_pos);
@@ -191,13 +164,14 @@ void main()
 #if TASK == 12 || TASK == 13
 
 	float prev_s = 0.0;
-	int iterations = 900;
+	int iterations = 400;
 	int i = 0;
 	float sigma = 0.00000001;
-	float left, right, mid;
-	float step = 0.0001;
+	vec3 left = vec3(0.0);
+	vec3 right = vec3(0.0);
+	float s_mid = 0.0;
 	bool found = false;
-	vec4 first_hit = vec4(0.0, 0.0, 0.0, 1.0);
+	vec4 showing_color = vec4(0.0, 0.0, 0.0, 1.0);
     // the traversal loop,
     // termination when the sampling position is outside volume boundarys
     // another termination condition for early ray termination is added
@@ -209,42 +183,45 @@ void main()
 		// apply the transfer functions to retrieve color and opacity
 		vec4 color = texture(transfer_texture, vec2(s, s));
 
+		vec3 mid = sampling_pos;
 
-		if ((s > iso_value) && (prev_s < iso_value)) {
-			first_hit = color;
+		// First hit
+		if ((s > iso_value)) {
+			showing_color = color;
+			N = normalize(get_gradient((mid).xyz));
 		
 
 #if TASK == 13 
 			// Binary Search
-			left = prev_s;
-			right = s;
+			left = sampling_pos - ray_increment;
+			right = sampling_pos;
+			s_mid = s;
 
 			i = 0;
 			found = false;
 
-			while (i < iterations && !found && left<=right) {
+			while (i < iterations && !found) {
 				
-				//first_hit = vec4(1.0, 0.0, 1.0, 1.0);
-				mid = left + ((right - left)/2);
+				mid = (right + left)/2;
+				s_mid = get_sample_data(mid);
 
-				if ((mid - iso_value) < sigma) {
+				if (abs(s_mid - iso_value) < sigma) {
 					found = true;
-					//first_hit = texture(transfer_texture, vec2(mid, mid));
-					//first_hit = vec4(0.0, 1.0, 0.0, 1.0);
 					break;
 				} else {
-					if (mid > iso_value) {
-						right = mid - step;
+					if (s_mid > iso_value) {
+						right = mid;
 					}
 					else {
-						left = mid + step;
+						left = mid;
 					}
 				}
 				i = i + 1;
 			}
-			first_hit = texture(transfer_texture, vec2(mid, mid));
+			showing_color = texture(transfer_texture, vec2(s_mid, s_mid));
+			//showing_color = vec4(1.0, 0.0, 0.0, 1.0);
 
-			
+			N = normalize(get_gradient((mid).xyz));
 
 #endif
 			break;
@@ -254,62 +231,38 @@ void main()
 	const float ka = 0.5;
 	const float kd = 0.5;
 	const float ks = 0.5;
-
-        // apply the transfer functions to retrieve color and opacity
-    //vec4 color = texture(transfer_texture, vec2(s, s));
-    //vec3 obj_to_tex = vec3(1.0) / max_bounds;
-
-    //vec4 color = texture(transfer_texture, vec2(s, s));
+	
+	const vec3 specular = vec3(1.0, 3.0, 3.0);
+	const float exponent = 5.0;
 
     //normalize vectors after interpolation
+	vec3 N = normalize(get_gradient((mid).xyz));
+	vec3 L = normalize((light_position - sampling_pos).xyz);
+	vec3 V = normalize((-ray_increment).xyz);
 
-    //Si N es el contrario del gradinete, tiene sentido color el gradiente en negativo, no?
-    vec3 N = normalize(get_gradient((-sampling_pos).xyz));
+    vec3 halfWayDir = normalize(light_position.xyz + camera_location.xyz);
 
-    vec3 L = normalize((light_position - camera_location).xyz);
-    vec3 V = normalize((-camera_location).xyz);
+	float spec = ks * pow(max(0.0, dot(N, halfWayDir)), exponent);
 
-    vec3 halfWayDir = normalize((light_position + camera_location).xyz);
-
-    float spec = ks * pow(max(dot(N, halfWayDir), 0.0),9.0);
-
-    float diffuse = kd * max(dot(N,L), 0.0);
+    float diffuse = kd * max(dot(N, L), 0.0);
     diffuse = clamp(diffuse, 0.0, 1.0);
 
-    resultingColor = vec4(ka * color.xyz + 
-                         diffuse * color.xyz  + 
-                         first_hit.xyz * spec,
-                         1.0);
+	/*resultingColor = vec4(ka * showing_color.xyz + 
+						  diffuse * showing_color.xyz  + 
+                         showing_color.xyz * spec,
+                         1.0);*/
 
+	//resultingColor = vec4(diffuse * showing_color.xyz, 1.0);
 
-    // get Blinn-Phong reflectance components
-		// G: i'd suggest doing this 3 times, per each color component
-        // F: Maybe it is not needed it if we assign directly to the FragColor.
+	resultingColor = vec4(N/2 + 0.5, 1.0);
+
     //Implemented for Blinn-Phong
     //Code taken from: http://learnopengl.com/#!Advanced-Lighting/Advanced-Lighting
-
-    //Fragcolor = vec4(ka * color + diffuse * color);
-
-    // diffuse color of the object from texture
-    //What values do we use for the color? 
-	// ---------------> it's either volume_texture or transfer_texture (check the uniforms you already have)
-
-	// check the code of get_sample_data and the color calculation in previous tasks
-	//vec3 diffuseColor = texture(transfer_texture, o_texcoords).rgb;
-
-	//vec3 obj_to_tex = vec3(1.0) / max_bounds;
-	//vec3 diffuseColor = texture(volume_texture, sampling_pos * obj_to_tex).rgb;
-
-    // combination of all components and diffuse color of the object
-	
-    //resultingColor.xyz = diffuseColor * (Iamb + Idif + Ispe);
-	// the final color should be assigned to Fragcolor (last line of the shader)
-	// but this should be possible to be combined with the other tasks -> dst variable
     
     //Se modifica el first_hit. Porque este esta enlazado a la task 12-13
-    first_hit = resultingColor;
-    //dst = resultingColor;
 
+	//showing_color = resultingColor;
+	//dst = showing_color;
 
 #if ENABLE_SHADOWING == 1 // Add Shadows
         IMPLEMENTSHADOW;
@@ -324,8 +277,10 @@ void main()
         inside_volume = inside_volume_bounds(sampling_pos);
     }
 
-	dst = first_hit;
+	showing_color = vec4(N / 2 + 0.5, 1.0);
+	dst = showing_color;
 #endif 
+	
 
 #if TASK == 31
     // the traversal loop,
