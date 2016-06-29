@@ -188,7 +188,7 @@ void main()
 		// First hit
 		if ((s > iso_value)) {
 			showing_color = color;
-			N = normalize(get_gradient((mid).xyz));
+			//N = normalize(get_gradient((mid).xyz));
 		
 
 #if TASK == 13 
@@ -221,10 +221,10 @@ void main()
 			showing_color = texture(transfer_texture, vec2(s_mid, s_mid));
 			//showing_color = vec4(1.0, 0.0, 0.0, 1.0);
 
-			N = normalize(get_gradient((mid).xyz));
+			//N = normalize(get_gradient((mid).xyz));
 
 #endif
-			showing_color = vec4(N / 2 + 0.5, 1.0);
+			//showing_color = vec4(N / 2 + 0.5, 1.0);
 			
 #if ENABLE_LIGHTNING == 1 // Add Shading
 
