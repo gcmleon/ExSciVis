@@ -69,6 +69,28 @@ get_gradient(vec3 in_sampling_pos)
 	return gradient;
 }
 
+float
+ShadowCalculation(vec3 in_sampling_pos)
+{
+
+	// get sample
+    float s = get_sample_data(in_sampling_pos);
+    // apply the transfer functions to retrieve color and opacity
+    vec4 color = texture(transfer_texture, vec2(s, s));
+    // perform perspective divide
+    vec3 projCoords = color.xyz / color.w;
+    // Transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // Get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(transfer_texture, projCoords.xy).r; 
+    // Get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // Check whether current frag pos is in shadow
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+
+    return shadow;
+} 
+
 
 // Phong Shading from http://sunandblackcat.com/tipFullView.php?l=eng&topicid=30&topic=Phong-Lighting
 
@@ -247,7 +269,11 @@ void main()
 		float diffuse = kd * max(dot(N, L), 0.0);
 		diffuse = clamp(diffuse, 0.0, 1.0);
 
-		showing_color = vec4(ka * showing_color.xyz + diffuse * showing_color.xyz + showing_color.xyz * spec, 1.0); 
+		//With ambient light
+		showing_color = vec4((ka + diffuse + spec) * showing_color.xyz, 1.0); 
+
+		//Without ambient light
+		//showing_color = vec4((diffuse + spec) * showing_color.xyz, 1.0); 
 
 		//showing_color = vec4(1.0, 0.0, 0.0, 1.0);
 		//resultingColor = vec4(N/2 + 0.5, 1.0);
@@ -257,7 +283,13 @@ void main()
    
 
 #if ENABLE_SHADOWING == 1 // Add Shadows
-        IMPLEMENTSHADOW;
+        float shadow = ShadowCalculation(mid);
+        //With ambient Light
+        showing_color = vec4((ka + (1.0 - shadow) * (diffuse + spec)) * showing_color.xyz, 1.0);
+
+        //Without ambient light
+        //showing_color = vec4(((1.0 - shadow) * (diffuse + spec)) * showing_color.xyz, 1.0);  
+ 
 #endif
 #endif
 		break;
