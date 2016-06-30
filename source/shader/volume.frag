@@ -63,14 +63,13 @@ get_gradient(vec3 in_sampling_pos)
 	float gz = (get_sample_data(vec3(in_sampling_pos.x, in_sampling_pos.y, in_sampling_pos.z + step_z)) - get_sample_data(vec3(in_sampling_pos.x, in_sampling_pos.y, in_sampling_pos.z - step_z))) / 2;
 
 	vec3 gradient = vec3(gx, gy, gz);
-	
 	//float magnitude = sqrt(gx*gx + gy*gy + gz*gz);
 
 	return gradient;
 }
 
 float
-ShadowCalculation(vec3 in_sampling_pos)
+shadow_calculation(vec3 in_sampling_pos)
 {
 
 	// get sample
@@ -79,7 +78,7 @@ ShadowCalculation(vec3 in_sampling_pos)
     vec4 color = texture(transfer_texture, vec2(s, s));
     // perform perspective divide
     vec3 projCoords = color.xyz / color.w;
-    // Transform to [0,1] range
+    // Transform to [0, 1] range
     projCoords = projCoords * 0.5 + 0.5;
     // Get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
     float closestDepth = texture(transfer_texture, projCoords.xy).r; 
@@ -89,10 +88,15 @@ ShadowCalculation(vec3 in_sampling_pos)
     float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
 
     return shadow;
-} 
+}
 
-
-// Phong Shading from http://sunandblackcat.com/tipFullView.php?l=eng&topicid=30&topic=Phong-Lighting
+// possibly helpful by compositing
+vec4
+front_to_back_traversal(vec4 intensity, float opacity)
+{
+	vec4 accumulated_intensity = (1 - opacity) * intensity;
+	return accumulated_intensity;
+}
 
 
 void main()
@@ -105,10 +109,8 @@ void main()
     /// Init color of fragment
     vec4 dst = vec4(0.0, 0.0, 0.0, 0.0);
 
-	vec4 resultingColor = vec4(0.0);
-
+	// Normal vector
 	vec3 N = vec3(0.0);
-		
 
     /// check if we are inside volume
     bool inside_volume = inside_volume_bounds(sampling_pos);
@@ -210,7 +212,7 @@ void main()
 		// First hit
 		if ((s > iso_value)) {
 			showing_color = color;
-			//N = normalize(get_gradient((mid).xyz));
+			//N = normalize(get_gradient((mid).xyz)); // to show normals
 		
 
 #if TASK == 13 
@@ -241,9 +243,7 @@ void main()
 				i = i + 1;
 			}
 			showing_color = texture(transfer_texture, vec2(s_mid, s_mid));
-			//showing_color = vec4(1.0, 0.0, 0.0, 1.0);
-
-			//N = normalize(get_gradient((mid).xyz));
+			//N = normalize(get_gradient((mid).xyz)); // to show normals
 
 #endif
 			//showing_color = vec4(N / 2 + 0.5, 1.0);
@@ -269,25 +269,22 @@ void main()
 		float diffuse = kd * max(dot(N, L), 0.0);
 		diffuse = clamp(diffuse, 0.0, 1.0);
 
-		//With ambient light
+		// With ambient light
 		showing_color = vec4((ka + diffuse + spec) * showing_color.xyz, 1.0); 
 
-		//Without ambient light
+		// Without ambient light
 		//showing_color = vec4((diffuse + spec) * showing_color.xyz, 1.0); 
 
-		//showing_color = vec4(1.0, 0.0, 0.0, 1.0);
-		//resultingColor = vec4(N/2 + 0.5, 1.0);
-
-		//Implemented for Blinn-Phong
-		//Code taken from: http://learnopengl.com/#!Advanced-Lighting/Advanced-Lighting
+		// Code taken from: http://learnopengl.com/#!Advanced-Lighting/Advanced-Lighting
+		// http://sunandblackcat.com/tipFullView.php?l=eng&topicid=30&topic=Phong-Lighting
    
 
 #if ENABLE_SHADOWING == 1 // Add Shadows
-        float shadow = ShadowCalculation(mid);
-        //With ambient Light
+        float shadow = shadow_calculation(mid);
+        // With ambient Light
         showing_color = vec4((ka + (1.0 - shadow) * (diffuse + spec)) * showing_color.xyz, 1.0);
 
-        //Without ambient light
+        // Without ambient light
         //showing_color = vec4(((1.0 - shadow) * (diffuse + spec)) * showing_color.xyz, 1.0);  
  
 #endif
@@ -302,12 +299,11 @@ void main()
         // update the loop termination condition
         inside_volume = inside_volume_bounds(sampling_pos);
     }
-
-	
+		
 	dst = showing_color;
 #endif 
 	
-
+// http://http.developer.nvidia.com/GPUGems/gpugems_ch39.html
 #if TASK == 31
     // the traversal loop,
     // termination when the sampling position is outside volume boundarys
@@ -327,7 +323,7 @@ void main()
         sampling_pos += ray_increment;
 
 #if ENABLE_LIGHTNING == 1 // Add Shading
-        //dst = resultingColor;
+		IMPLEMENT;
 #endif
 
         // update the loop termination condition
