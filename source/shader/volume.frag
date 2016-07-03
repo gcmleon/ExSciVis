@@ -56,7 +56,7 @@ get_gradient(vec3 in_sampling_pos)
 	float step_z = 1.0 / volume_dimensions.z;
 
 	// X axis
-	float gx = (get_sample_data(vec3(in_sampling_pos.x + step_x, in_sampling_pos.y, in_sampling_pos.z)) - get_sample_data(vec3(in_sampling_pos.x - step_x, in_sampling_pos.y, in_sampling_pos.z))) / 2;
+	float gx = (get_sample_data(vec3(in_sampling_pos.x + step_x, in_sampling_pos.y, in_sampling_pos.z)) - get_sample_data(vec3(in_sampling_pos.x - step_x, in_sampling_pos.y, in_sampling_pos.z))) / 2; // why divided by 2? and the h?
 	// Y axis
 	float gy = (get_sample_data(vec3(in_sampling_pos.x, in_sampling_pos.y + step_y, in_sampling_pos.z)) - get_sample_data(vec3(in_sampling_pos.x, in_sampling_pos.y - step_y, in_sampling_pos.z))) / 2;
 	// Z axis
@@ -90,14 +90,12 @@ shadow_calculation(vec3 in_sampling_pos)
     return shadow;
 }
 
-// possibly helpful by compositing
-vec4
-front_to_back_traversal(vec4 intensity, float opacity)
+float
+opacity_correction(float old_opacity)
 {
-	vec4 accumulated_intensity = (1 - opacity) * intensity;
-	return accumulated_intensity;
+	float relative_sampling_rate = sampling_distance / sampling_distance_ref;
+	return (1 - pow((1 - old_opacity), relative_sampling_rate));
 }
-
 
 void main()
 {
@@ -111,6 +109,12 @@ void main()
 
 	// Normal vector
 	vec3 N = vec3(0.0);
+
+	// Phong shading variables
+	const float ka = 0.5;
+	const float kd = 0.5;
+	const float ks = 0.5;
+	const float exponent = 5.0;
 
     /// check if we are inside volume
     bool inside_volume = inside_volume_bounds(sampling_pos);
@@ -250,15 +254,8 @@ void main()
 			
 #if ENABLE_LIGHTNING == 1 // Add Shading
 
-		const float ka = 0.5;
-		const float kd = 0.5;
-		const float ks = 0.5;
-	
-		const vec3 specular = vec3(1.0, 3.0, 3.0);
-		const float exponent = 5.0;
-
 		//normalize vectors after interpolation
-		vec3 N = normalize(get_gradient((mid).xyz));
+		vec3 N = normalize(get_gradient((mid).xyz)); // surface normal
 		vec3 L = normalize((light_position - mid).xyz);
 		vec3 V = normalize((-ray_increment).xyz);
 
@@ -308,27 +305,56 @@ void main()
     // the traversal loop,
     // termination when the sampling position is outside volume boundarys
     // another termination condition for early ray termination is added
+	float trans = 1.0;
+	vec4 prev_color = vec4(0.0);
+	vec4 accumulated_color = vec4(0.0);
+
     while (inside_volume)
     {
         // get sample
-#if ENABLE_OPACITY_CORRECTION == 1 // Opacity Correction
-        IMPLEMENT;
-#else
-        float s = get_sample_data(sampling_pos);
-#endif
-        // dummy code
-        dst = vec4(light_specular_color, 1.0);
+		float s = get_sample_data(sampling_pos);
+		vec4 color = texture(transfer_texture, vec2(s, s));
 
-        // increment the ray sampling position
-        sampling_pos += ray_increment;
+#if ENABLE_OPACITY_CORRECTION == 1 // Opacity Correction
+		color.a = opacity_correction(color.a);
+#else
+        //float s = get_sample_data(sampling_pos);
+#endif
+		// 3.1 Front-to-back compositing traversal scheme
+		trans = trans * (1 - prev_color.a);
+		accumulated_color = trans * color + accumulated_color;
+
+		// early ray termination
+		if (trans <= 0.01) {
+			break;
+		}
+		
+		prev_color = color;
+
+		// dummy code
+		// dst = vec4(light_specular_color, 1.0);
 
 #if ENABLE_LIGHTNING == 1 // Add Shading
-		IMPLEMENT;
+		vec3 N = normalize(get_gradient((sampling_pos).xyz)); // surface normal
+		vec3 L = normalize((light_position - sampling_pos).xyz);
+		vec3 V = normalize((-ray_increment).xyz);
+		vec3 halfWayDir = normalize(light_position.xyz + camera_location.xyz);
+
+		float spec = ks * pow(max(0.0, dot(N, halfWayDir)), exponent);
+		float diffuse = kd * max(dot(N, L), 0.0);
+		diffuse = clamp(diffuse, 0.0, 1.0);
+
+		accumulated_color = vec4((ka + diffuse + spec) * accumulated_color.xyz, accumulated_color.a); // trans?
 #endif
+
+		// increment the ray sampling position
+		sampling_pos += ray_increment;
 
         // update the loop termination condition
         inside_volume = inside_volume_bounds(sampling_pos);
     }
+	// total intensity accumulated on the ray
+	dst = accumulated_color;
 #endif 
 
     // return the calculated color value
