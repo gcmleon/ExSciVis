@@ -103,7 +103,7 @@ float
 opacity_correction(float old_opacity)
 {
 	float relative_sampling_rate = sampling_distance / sampling_distance_ref;
-	return (1 - pow((1 - old_opacity), relative_sampling_rate));
+	return (1 - pow((1 - old_opacity), relative_sampling_rate * 255));
 }
 
 void main()
@@ -312,9 +312,13 @@ void main()
     // the traversal loop,
     // termination when the sampling position is outside volume boundarys
     // another termination condition for early ray termination is added
+	sampling_pos       = ray_entry_position + ray_increment;
+
 	float trans = 1.0;
 	vec4 prev_color = vec4(0.0);
-	vec4 accumulated_color = vec4(0.0);
+	vec3 accumulated_color = vec3(0.0);
+
+	vec4 showing_color = vec4(0.0);
 
     while (inside_volume)
     {
@@ -324,22 +328,11 @@ void main()
 
 #if ENABLE_OPACITY_CORRECTION == 1 // Opacity Correction
 		color.a = opacity_correction(color.a);
-#else
-        //float s = get_sample_data(sampling_pos);
+#else 
+        // nothing
 #endif
-		// 3.1 Front-to-back compositing traversal scheme
-		trans = trans * (1 - prev_color.a);
-		accumulated_color = trans * color + accumulated_color;
-
-		// early ray termination
-		if (trans <= 0.01) {
-			break;
-		}
-		
-		prev_color = color;
-
-		// dummy code
-		// dst = vec4(light_specular_color, 1.0);
+		//trans = trans * (1 - prev_color.a);
+		//accumulated_color = accumulated_color + trans * color.rgb * color.a;
 
 #if ENABLE_LIGHTNING == 1 // Add Shading
 		vec3 N = normalize(get_gradient((sampling_pos).xyz)); // surface normal
@@ -352,12 +345,29 @@ void main()
 		diffuse = clamp(diffuse, 0.0, 1.0);
 
 		vec3 ambient_v = ka * light_ambient_color;
-		vec3 diffuse_v = diffuse * light_diffuse_color;
+		vec3 diffuse_v = diffuse * color.rgb;
 		vec3 specular_v = spec * light_specular_color;
 
-		accumulated_color = vec4((ambient_v + diffuse_v + specular_v) + accumulated_color.xyz, accumulated_color.a); // trans?
-		// accumulated_color = vec4((ka + diffuse + spec) * accumulated_color.xyz, accumulated_color.a);
+		//accumulated_color = vec4((ambient_v + diffuse_v + specular_v) + accumulated_color.xyz, accumulated_color.a); // trans?
+		//accumulated_color = ( diffuse_v /* + specular_v*/) * 0.5 + accumulated_color; // trans?
+
+		color = vec4((diffuse_v + ambient_v + specular_v) + color.rgb, color.a); // trans?
+		//color = vec4(vec3(1.1, 0.1, 0.1) + color.rgb, color.a); // trans?
+
+		//showing_color = vec4(accumulated_color, 1.0);
 #endif
+		// 3.1 Front-to-back compositing traversal scheme
+		trans = trans * (1 - prev_color.a);
+		accumulated_color = accumulated_color + trans * color.rgb * color.a;
+
+		showing_color = vec4(accumulated_color, trans);
+
+		// early ray termination
+		if (trans <= 0.01) {
+			break;
+		}
+
+		prev_color = color;
 
 		// increment the ray sampling position
 		sampling_pos += ray_increment;
@@ -366,7 +376,7 @@ void main()
         inside_volume = inside_volume_bounds(sampling_pos);
     }
 	// total intensity accumulated on the ray
-	dst = accumulated_color;
+	dst = showing_color;
 #endif 
 
     // return the calculated color value
