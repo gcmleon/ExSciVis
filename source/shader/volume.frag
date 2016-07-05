@@ -68,25 +68,34 @@ get_gradient(vec3 in_sampling_pos)
 	return gradient;
 }
 
+
 float
 shadow_calculation(vec3 in_sampling_pos)
 {
+	float shadow = 0.0;
+	vec3 vec_increment = normalize(in_sampling_pos - light_position) * sampling_distance;
 
-	// get sample
-    float s = get_sample_data(in_sampling_pos);
-    // apply the transfer functions to retrieve color and opacity
-    vec4 color = texture(transfer_texture, vec2(s, s));
-    // perform perspective divide
-    vec3 projCoords = color.xyz / color.w;
-    // Transform to [0, 1] range
-    projCoords = projCoords * 0.5 + 0.5;
-    // Get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-    float closestDepth = texture(transfer_texture, projCoords.xy).r; 
-    // Get depth of current fragment from light's perspective
-    float currentDepth = projCoords.z;
-    // Check whether current frag pos is in shadow
-    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+	vec3 frag_pos = in_sampling_pos + vec_increment;
 
+	/// check if we are inside volume
+	bool inside_volume = inside_volume_bounds(frag_pos);
+
+	while (inside_volume)
+	{
+		// get sample
+		float s = get_sample_data(frag_pos);
+	 
+		if (s > iso_value) {
+			shadow = 1.0;
+			break;
+		}
+
+		frag_pos += vec_increment;
+
+		// update the loop termination condition
+		inside_volume = inside_volume_bounds(frag_pos);
+
+	}
     return shadow;
 }
 
@@ -277,7 +286,7 @@ void main()
    
 
 #if ENABLE_SHADOWING == 1 // Add Shadows
-        float shadow = shadow_calculation(mid);
+		float shadow = shadow_calculation(mid);
 
 		showing_color = vec4((ambient_v + (1.0 - shadow) * (diffuse_v + specular_v)) + showing_color.xyz, 1.0);
 		// showing_color = vec4((ka + (1.0 - shadow) * (diffuse + spec)) * showing_color.xyz, 1.0);
