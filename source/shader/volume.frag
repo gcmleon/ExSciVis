@@ -111,10 +111,10 @@ void main()
 	vec3 N = vec3(0.0);
 
 	// Phong shading variables
-	const float ka = 0.5;
+	const float ka = 0.25;
 	const float kd = 0.5;
 	const float ks = 0.5;
-	const float exponent = 5.0;
+	float shininess = light_ref_coef;
 
     /// check if we are inside volume
     bool inside_volume = inside_volume_bounds(sampling_pos);
@@ -261,16 +261,16 @@ void main()
 
 		vec3 halfWayDir = normalize(light_position.xyz + camera_location.xyz);
 
-		float spec = ks * pow(max(0.0, dot(N, halfWayDir)), exponent);
+		float spec = ks * pow(max(0.0, dot(N, halfWayDir)), shininess);
 
 		float diffuse = kd * max(dot(N, L), 0.0);
 		diffuse = clamp(diffuse, 0.0, 1.0);
 
-		// With ambient light
-		showing_color = vec4((ka + diffuse + spec) * showing_color.xyz, 1.0); 
+		vec3 ambient_v = ka * light_ambient_color;
+		vec3 diffuse_v = diffuse * light_diffuse_color;
+		vec3 specular_v = spec * light_specular_color;
 
-		// Without ambient light
-		//showing_color = vec4((diffuse + spec) * showing_color.xyz, 1.0); 
+		showing_color = vec4((ambient_v + diffuse_v + specular_v) + showing_color.xyz, 1.0); 
 
 		// Code taken from: http://learnopengl.com/#!Advanced-Lighting/Advanced-Lighting
 		// http://sunandblackcat.com/tipFullView.php?l=eng&topicid=30&topic=Phong-Lighting
@@ -278,11 +278,9 @@ void main()
 
 #if ENABLE_SHADOWING == 1 // Add Shadows
         float shadow = shadow_calculation(mid);
-        // With ambient Light
-        showing_color = vec4((ka + (1.0 - shadow) * (diffuse + spec)) * showing_color.xyz, 1.0);
 
-        // Without ambient light
-        //showing_color = vec4(((1.0 - shadow) * (diffuse + spec)) * showing_color.xyz, 1.0);  
+		showing_color = vec4((ambient_v + (1.0 - shadow) * (diffuse_v + specular_v)) + showing_color.xyz, 1.0);
+		// showing_color = vec4((ka + (1.0 - shadow) * (diffuse + spec)) * showing_color.xyz, 1.0);
  
 #endif
 #endif
@@ -340,11 +338,16 @@ void main()
 		vec3 V = normalize((-ray_increment).xyz);
 		vec3 halfWayDir = normalize(light_position.xyz + camera_location.xyz);
 
-		float spec = ks * pow(max(0.0, dot(N, halfWayDir)), exponent);
+		float spec = ks * pow(max(0.0, dot(N, halfWayDir)), shininess);
 		float diffuse = kd * max(dot(N, L), 0.0);
 		diffuse = clamp(diffuse, 0.0, 1.0);
 
-		accumulated_color = vec4((ka + diffuse + spec) * accumulated_color.xyz, accumulated_color.a); // trans?
+		vec3 ambient_v = ka * light_ambient_color;
+		vec3 diffuse_v = diffuse * light_diffuse_color;
+		vec3 specular_v = spec * light_specular_color;
+
+		accumulated_color = vec4((ambient_v + diffuse_v + specular_v) + accumulated_color.xyz, accumulated_color.a); // trans?
+		// accumulated_color = vec4((ka + diffuse + spec) * accumulated_color.xyz, accumulated_color.a);
 #endif
 
 		// increment the ray sampling position
