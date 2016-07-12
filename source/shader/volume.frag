@@ -318,9 +318,11 @@ void main()
 	vec4 prev_color = vec4(0.0);
 	vec3 accumulated_color = vec3(0.0);
 
-	//vec3 inten = vec3(1.0);
-
 	vec4 showing_color = vec4(0.0);
+
+	// back-to-front variables
+	vec3 inten = vec3(0.0);
+	vec4 back_color;
 
     while (inside_volume)
     {
@@ -358,6 +360,8 @@ void main()
 
 		//showing_color = vec4(accumulated_color, 1.0);
 #endif
+		/*
+		// *********************************************************************
 		// 3.1 Front-to-back compositing traversal scheme
 		trans = trans * (1 - prev_color.a);
 		accumulated_color = accumulated_color + trans * color.rgb * color.a;
@@ -370,25 +374,51 @@ void main()
 		}
 
 		prev_color = color;
-
-		// 3.1 Back-to-front compositing traversal scheme
-
-		//T[i-1] = prev_color.a;
-		//inten = accumulated_color
-		//I[i] = color.rgb * color.a
-		//C[i] = color.rgb
-		//A[i] = color.a
-
-		//vec3 inten = vec3(0.0);
-
-		//inten = color.rgb * color.a  + inten * (1 - color.a);
+		// *********************************************************************
+		*/
 
 		// increment the ray sampling position
 		sampling_pos += ray_increment;
 
         // update the loop termination condition
         inside_volume = inside_volume_bounds(sampling_pos);
+
+		// for back-to-front composting
+		back_color = color;
+
     }
+
+	
+	// *********************************************************************
+	// 3.2 Back-to-front compositing traversal scheme
+	sampling_pos -= ray_increment;
+	inside_volume = inside_volume_bounds(sampling_pos);
+
+	while (inside_volume)
+	{
+		//T[i-1] = prev_color.a;
+		//inten = accumulated_color
+		//I[i] = color.rgb * color.a
+		//C[i] = color.rgb
+		//A[i] = color.a
+
+		inten = back_color.rgb * back_color.a  + inten * (1 - back_color.a);
+		showing_color = vec4(inten, 1.0);
+
+		// increment the ray sampling position
+		sampling_pos -= ray_increment;
+
+		// get sample
+		float s = get_sample_data(sampling_pos);
+		back_color = texture(transfer_texture, vec2(s, s));
+
+		// update the loop termination condition
+		inside_volume = inside_volume_bounds(sampling_pos);
+
+	}
+	// *********************************************************************
+	
+
 	// total intensity accumulated on the ray
 	dst = showing_color;
 #endif 
