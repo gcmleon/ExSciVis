@@ -352,11 +352,11 @@ void main()
 		vec3 diffuse_v = diffuse * color.rgb;
 		vec3 specular_v = spec * light_specular_color;
 
-		//accumulated_color = vec4((ambient_v + diffuse_v + specular_v) + accumulated_color.xyz, accumulated_color.a); // trans?
-		//accumulated_color = ( diffuse_v /* + specular_v*/) * 0.5 + accumulated_color; // trans?
+		//accumulated_color = vec4((ambient_v + diffuse_v + specular_v) + accumulated_color.xyz, accumulated_color.a); 
+		//accumulated_color = ( diffuse_v /* + specular_v*/) * 0.5 + accumulated_color;
 
 		color = vec4((diffuse_v + ambient_v + specular_v) + color.rgb, color.a); // trans?
-		//color = vec4(vec3(1.1, 0.1, 0.1) + color.rgb, color.a); // trans?
+		//color = vec4(vec3(1.1, 0.1, 0.1) + color.rgb, color.a);
 
 		//showing_color = vec4(accumulated_color, 1.0);
 #endif
@@ -411,6 +411,23 @@ void main()
 		// get sample
 		float s = get_sample_data(sampling_pos);
 		back_color = texture(transfer_texture, vec2(s, s));
+
+#if ENABLE_LIGHTNING == 1 // Add Shading
+		vec3 N = normalize(get_gradient((sampling_pos).xyz)); // surface normal
+		vec3 L = normalize((light_position - sampling_pos).xyz);
+		vec3 V = normalize((-ray_increment).xyz);
+		vec3 halfWayDir = normalize(light_position.xyz + camera_location.xyz);
+
+		float spec = ks * pow(max(0.0, dot(N, halfWayDir)), shininess);
+		float diffuse = kd * max(dot(N, L), 0.0);
+		diffuse = clamp(diffuse, 0.0, 1.0);
+
+		vec3 ambient_v = ka * light_ambient_color;
+		vec3 diffuse_v = diffuse * back_color.rgb;
+		vec3 specular_v = spec * light_specular_color;
+
+		back_color = vec4((diffuse_v + ambient_v + specular_v) + back_color.rgb, back_color.a);
+#endif
 
 		// update the loop termination condition
 		inside_volume = inside_volume_bounds(sampling_pos);
