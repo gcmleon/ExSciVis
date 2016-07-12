@@ -318,6 +318,8 @@ void main()
 	vec4 prev_color = vec4(0.0);
 	vec3 accumulated_color = vec3(0.0);
 
+	//vec3 inten = vec3(1.0);
+
 	vec4 showing_color = vec4(0.0);
 
     while (inside_volume)
@@ -368,6 +370,18 @@ void main()
 		}
 
 		prev_color = color;
+
+		// 3.1 Back-to-front compositing traversal scheme
+
+		//T[i-1] = prev_color.a;
+		//inten = accumulated_color
+		//I[i] = color.rgb * color.a
+		//C[i] = color.rgb
+		//A[i] = color.a
+
+		//vec3 inten = vec3(0.0);
+
+		//inten = color.rgb * color.a  + inten * (1 - color.a);
 
 		// increment the ray sampling position
 		sampling_pos += ray_increment;
