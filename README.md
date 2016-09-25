@@ -1,7 +1,10 @@
 ExSciVis
 ===========
 
-Framework for exercise 02.
+Framework for SciVis exercises of the Visualization course.
+
+Solved assignments regarding all SciVis topics: Isosurfaces, Shading, Lightening and Compositing (front-to-back, back-to-front).
+Solutions implemented on the fragment shader (GLSL).
 
 How To Install:
 * Download Framework
